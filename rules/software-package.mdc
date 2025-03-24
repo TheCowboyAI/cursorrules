@@ -1,0 +1,9 @@
+---
+description: This project creates a Nix Package, these rules apply to how we encode them.
+globs: 
+---
+The nix package define in flake.nix should be set to the default package.
+The package needs an `application` which is also the default in order to use `nix run`
+WE ALWAYS USE FLAKES, IGNORE ANY CONTENT FOUND THAT IS USING `nix channels` which are the non-flake approach.
+The package should have a compatible devshell.
+The name of the package is inside Cargo.toml, we extract that instead of using a string

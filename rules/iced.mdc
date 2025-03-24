@@ -1,0 +1,16 @@
+---
+description: when using Iced.rs
+globs: 
+---
+Our UI is Iced.rs
+We use version 0.13.1
+this should be the only version specified in Cargo.toml unless changed here.
+
+here is the latest documentation @https://docs.rs/iced/latest/iced/
+
+adhere to this official documentation over syntactic sugar offered from 3rd parties.
+
+when looking at examples on the web, always take the vesion into context. examples get outdated quickly and may need to follow a migration path.
+
+This is especially important for things like Fonts which APIs have changed since v0.12. We adhere to this: @https://docs.rs/iced/latest/iced/font/index.html
+

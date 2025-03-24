@@ -1,0 +1,24 @@
+---
+description: Rust Projects
+globs: Cargo.toml, Cargo.lock, rust-toolchain.toml, **/*.rs
+---
+DO NOT USE CRANE
+
+USE the oxalica rust overlay
+
+create a rust-toolchain.toml
+Use RUST Version 1.85.1
+include these components:
+```
+components = [ "rustc", "rust-src","rust-std", "cargo", "cargo-make", "clippy", "rustfmt", "rust-analyzer" ] 
+```
+
+ADD common rust temporary files to .gitignore
+
+create a Cargo.toml in the root
+create a Cargo.lock file, using `cargo generate-lock-file', it will be used in flake.nix
+
+put source code ONLY in /src
+we do not use sub-project folders
+
+

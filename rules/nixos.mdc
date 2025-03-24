@@ -1,0 +1,58 @@
+---
+description: nixos
+globs: 
+---
+DO NOT USE NON-FLAKE BASED METHOLOGIES BASED ON CHANNELS
+WE ONLY USE FLAKE BASED SYSTEMS
+
+## NixOS Foundation Rules
+1. **Always start with Nix flake**  
+```
+   {
+     inputs = {
+       nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+       rust-overlay.url = "github:oxalica/rust-overlay";
+     };
+     
+     outputs = { self, nixpkgs, rust-overlay }:
+       let
+         system = "x86_64-linux";
+         pkgs = import nixpkgs {
+           inherit system;
+           overlays = [ rust-overlay ];
+         };
+         toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+       in {
+         devShells.${system}.default = pkgs.mkShell {
+           packages = with pkgs; [ 
+             rust-bin.stable.latest.default
+             toolchain
+           ];
+         };
+       };
+   }
+  ```
+make a .envrc file to support direnv.
+
+always check the linter and fix and errors or warnings
+use nix flake check to verify any flake.nix files before offering suggested syntax
+
+use nixos-latest-stable unless unstable is specified in the documentation
+MINIMUM NIXOS VERSION IS 24.11
+
+ALWAYS make MODULARIZED Flakes, where we separate .nix modules logically.
+DO NOT USE FLAKE-PARTS
+DO NOT USE FLAKE-UTILS
+USE PURE NIX SYNTAX, avoid anything that will cause us to use the --impure flag
+
+put the devshell in /modules/shells/devshell.nix
+put nixos modules in /modules/nixos
+put home-manager modules in /modules/hm
+put nix lists such as packages in /modules/lists
+put nix attribute-sets such as options in /modules/sets
+
+DO NOT USE HOME-MANAGER UNLESS TOLD TO USE HOME-MANAGER INSIDE @productContext.md
+
+flake.nix should import these rather than define them inline.
+
+WHEN ADDING ANY FILES TO A REPO YOU MUST: `git add <filename>` immediately after adding, or after adding a batch of files, git add them all.

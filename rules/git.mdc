@@ -1,0 +1,10 @@
+---
+description: git workflows and patterns
+globs: 
+---
+when adding a NEW file, always git add <filename>,
+this can be done in batches if more than one file are created.
+
+when moving from one step to the next in SLDC, ALWAYS git commit, giving the user the option to stach selected changes.
+
+we use direnv, ADD .direnv to gitignore

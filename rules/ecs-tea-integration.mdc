@@ -1,0 +1,13 @@
+---
+description: Guidelines for integrating Entity Component System with The Elm Architecture
+globs: "**/*.rs"
+---
+# Entity Component System with The Elm Architecture
+
+This document describes our approach to integrating Entity Component System (ECS) architecture with The Elm Architecture (TEA) for UI development.
+
+## Core ECS Concepts
+
+### Entities
+
+Entities are unique identifiers that represent objects in our system: 

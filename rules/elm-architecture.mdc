@@ -1,0 +1,11 @@
+---
+description: Guide for implementing The Elm Architecture in UI development
+globs: "**/*.rs"
+---
+# The Elm Architecture Pattern
+
+The Elm Architecture (TEA) is our standard pattern for UI development with Iced, providing a unidirectional data flow.
+
+## Core Components
+
+### 1. Model - Application State 

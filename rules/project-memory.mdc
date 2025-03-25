@@ -1,0 +1,146 @@
+rule_name: "Project Memory Management"
+description: "Rules for maintaining project memory bank and documentation structure"
+glob: "docs/**/*.md"
+rules:
+  - name: "Core Files Existence"
+    pattern: "docs/(projectBrief|projectContext|domainContext|systemPatterns|techContext|progress)\\.md"
+    ensure:
+      - "File exists"
+      - "Contains required sections"
+      - "Updated regularly"
+      - "Follows memory bank hierarchy"
+    message: "Core memory bank files must exist and be maintained"
+    severity: "error"
+
+  - name: "Project Brief Structure"
+    pattern: "docs/projectBrief\\.md"
+    ensure:
+      - "Defines core requirements"
+      - "States project goals"
+      - "Specifies project scope"
+      - "Acts as source of truth"
+    message: "Project Brief must define core project requirements and scope"
+    severity: "error"
+
+  - name: "Project Context Structure"
+    pattern: "docs/projectContext\\.md"
+    ensure:
+      - "Explains project existence"
+      - "Describes problems solved"
+      - "Details operation methods"
+      - "Defines UX goals"
+    message: "Project Context must explain why and how the project works"
+    severity: "error"
+
+  - name: "Domain Context Structure"
+    pattern: "docs/domainContext\\.md"
+    ensure:
+      - "Contains domain specifics"
+      - "Lists current focus"
+      - "Documents recent changes"
+      - "Outlines next steps"
+      - "Records active decisions"
+    message: "Domain Context must track current state and decisions"
+    severity: "error"
+
+  - name: "System Patterns Structure"
+    pattern: "docs/systemPatterns\\.md"
+    ensure:
+      - "Defines system architecture"
+      - "Lists technical decisions"
+      - "Documents design patterns"
+      - "Shows component relationships"
+    message: "System Patterns must document technical architecture and decisions"
+    severity: "error"
+
+  - name: "Tech Context Structure"
+    pattern: "docs/techContext\\.md"
+    ensure:
+      - "Lists technologies used"
+      - "Details dev setup"
+      - "Specifies constraints"
+      - "Documents dependencies"
+    message: "Tech Context must document technical environment and constraints"
+    severity: "error"
+
+  - name: "Progress Structure"
+    pattern: "docs/progress\\.md"
+    ensure:
+      - "Lists working features"
+      - "Tracks remaining work"
+      - "Shows current status"
+      - "Documents current mode"
+      - "Lists known issues"
+    message: "Progress must track project status and remaining work"
+    severity: "error"
+
+  - name: "Memory Bank Updates"
+    pattern: "(domainContext|progress)\\.md"
+    ensure:
+      - "Updated after significant changes"
+      - "Documents current state"
+      - "Records mode transitions"
+      - "Lists next steps"
+    message: "Memory Bank must be updated after significant changes"
+    severity: "warning"
+
+  - name: "Mode Documentation"
+    pattern: "\\b(Plan|Act)\\s+Mode\\b"
+    ensure:
+      - "Follows mode workflow"
+      - "Documents mode transition"
+      - "Lists mode-specific tasks"
+      - "Updates progress.md"
+    message: "Mode changes must be properly documented and followed"
+    severity: "warning"
+
+  - name: "Documentation Hierarchy"
+    pattern: "docs/.*\\.md"
+    ensure:
+      - "Follows memory bank hierarchy"
+      - "References parent documents"
+      - "Maintains consistency"
+      - "Updates related files"
+    message: "Documentation must follow memory bank hierarchy"
+    severity: "warning"
+
+suggestions:
+  - when: "starting_project"
+    suggest: |
+      1. Create projectBrief.md first
+      2. Create projectContext.md based on brief
+      3. Create systemPatterns.md for architecture
+      4. Create techContext.md for environment
+      5. Create domainContext.md for current state
+      6. Create progress.md to track status
+      7. Wait for user input before proceeding
+
+  - when: "updating_memory"
+    suggest: |
+      1. Review ALL memory bank files
+      2. Update domainContext.md with changes
+      3. Update progress.md with status
+      4. Update related documentation
+      5. Verify hierarchy consistency
+
+  - when: "changing_modes"
+    suggest: |
+      1. Document current mode completion
+      2. Update progress.md with status
+      3. Document new mode requirements
+      4. Wait for explicit mode change
+      5. Update domainContext.md
+
+  - when: "adding_context"
+    suggest: |
+      1. Create in appropriate doc/ subfolder
+      2. Link to parent documentation
+      3. Follow memory bank hierarchy
+      4. Update related core files
+      5. Document in progress.md
+
+references:
+  - "Project Memory Structure: docs/project-memory.md"
+  - "Memory Bank Hierarchy: docs/project-memory.md#memory-bank-structure"
+  - "Core Workflows: docs/project-memory.md#core-workflows"
+  - "Documentation Updates: docs/project-memory.md#documentation-updates" 

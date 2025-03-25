@@ -1,13 +1,142 @@
----
-description: Guidelines for integrating Entity Component System with The Elm Architecture
-globs: "**/*.rs"
----
-# Entity Component System with The Elm Architecture
+rule_name: "ECS-TEA Integration Architecture"
+description: "Rules for implementing integrated ECS backend with TEA UI architecture"
+glob: "**/*.rs"
+rules:
+  - name: "Message Bridge Pattern"
+    pattern: "struct.*Bridge.*\\{[^}]*nats.*sender"
+    ensure:
+      - "Implements proper message translation"
+      - "Handles async communication"
+      - "Manages subscriptions"
+      - "Provides error handling"
+    message: "Message bridges must properly connect ECS events to UI messages"
+    severity: "error"
 
-This document describes our approach to integrating Entity Component System (ECS) architecture with The Elm Architecture (TEA) for UI development.
+  - name: "UI Message Structure"
+    pattern: "enum.*Message"
+    ensure:
+      - "Separates internal and external messages"
+      - "Handles all ECS event types"
+      - "Maintains TEA pattern"
+      - "Documents message flow"
+    message: "UI messages must handle both local and ECS-sourced events"
+    severity: "error"
 
-## Core ECS Concepts
+  - name: "Component Synchronization"
+    pattern: "fn.*sync_component"
+    ensure:
+      - "Updates local state"
+      - "Notifies ECS when needed"
+      - "Handles errors"
+      - "Maintains consistency"
+    message: "Component synchronization must maintain consistency between UI and ECS"
+    severity: "error"
 
-### Entities
+  - name: "View Model Transformation"
+    pattern: "impl.*From<.*>.*ViewModel"
+    ensure:
+      - "Properly transforms ECS data"
+      - "Maintains necessary UI state"
+      - "Implements all required traits"
+      - "Handles optional fields"
+    message: "View models must properly transform ECS data for UI consumption"
+    severity: "warning"
 
-Entities are unique identifiers that represent objects in our system: 
+  - name: "Subscription Management"
+    pattern: "struct.*SubscriptionManager"
+    ensure:
+      - "Tracks active subscriptions"
+      - "Handles cleanup"
+      - "Manages NATS connection"
+      - "Implements error handling"
+    message: "Subscription management must handle all subscription lifecycle events"
+    severity: "warning"
+
+  - name: "Command Integration"
+    pattern: "fn.*to_ecs_command"
+    ensure:
+      - "Properly maps UI commands"
+      - "Maintains async context"
+      - "Handles errors"
+      - "Returns appropriate results"
+    message: "Command integration must properly translate between UI and ECS commands"
+    severity: "error"
+
+  - name: "State Management"
+    pattern: "struct.*State.*\\{[^}]*ui_state.*ecs"
+    ensure:
+      - "Maintains synchronized state"
+      - "Implements caching"
+      - "Handles updates efficiently"
+      - "Tracks sync status"
+    message: "State management must maintain consistency between UI and ECS"
+    severity: "error"
+
+  - name: "Error Handling"
+    pattern: "enum.*Error"
+    ensure:
+      - "Covers all error cases"
+      - "Provides context"
+      - "Implements proper traits"
+      - "Handles recovery"
+    message: "Error handling must cover all integration failure modes"
+    severity: "error"
+
+  - name: "Performance Optimization"
+    pattern: "struct.*Cache"
+    ensure:
+      - "Implements efficient caching"
+      - "Handles cache invalidation"
+      - "Optimizes memory usage"
+      - "Tracks metrics"
+    message: "Performance optimizations must be properly implemented"
+    severity: "warning"
+
+  - name: "Testing Integration"
+    pattern: "#\\[cfg\\(test\\)\\]"
+    ensure:
+      - "Tests UI-ECS integration"
+      - "Mocks external systems"
+      - "Verifies synchronization"
+      - "Handles edge cases"
+    message: "Integration tests must verify UI-ECS communication"
+    severity: "info"
+
+suggestions:
+  - when: "implementing_bridge"
+    suggest: |
+      1. Create message translation layer
+      2. Set up NATS subscription
+      3. Implement error handling
+      4. Add message routing
+      5. Document message flow
+
+  - when: "adding_component_sync"
+    suggest: |
+      1. Define sync strategy
+      2. Implement state tracking
+      3. Add error handling
+      4. Set up caching
+      5. Add performance metrics
+
+  - when: "creating_view_model"
+    suggest: |
+      1. Define transformation rules
+      2. Handle all ECS fields
+      3. Add UI-specific state
+      4. Implement update logic
+      5. Add validation
+
+  - when: "setting_up_subscriptions"
+    suggest: |
+      1. Create subscription manager
+      2. Handle cleanup
+      3. Implement error recovery
+      4. Add monitoring
+      5. Document patterns
+
+references:
+  - "Iced Documentation: https://docs.rs/iced"
+  - "NATS Documentation: https://docs.nats.io/"
+  - "The Elm Architecture: https://guide.elm-lang.org/architecture/"
+  - "Entity Component Systems: https://gameprogrammingpatterns.com/component.html" 

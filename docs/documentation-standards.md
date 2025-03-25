@@ -1,7 +1,3 @@
----
-description: documentation standards for our projects
-globs: **/*.md
----
 # Documentation Standards
 
 All documentation is in /doc EXCEPT /readme.md which is a high level overview of the project.

@@ -1,7 +1,3 @@
----
-description: core design principles
-globs: 
----
 # Software Design Principles
 
 Our software design follows these core principles across all projects.

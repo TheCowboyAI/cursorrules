@@ -1,45 +1,141 @@
----
-description: assist in writing domain objects and design
-globs: 
----
-# Domain Driven Design Patterns
+rule_name: "Domain-Driven Design Patterns"
+description: "Rules for implementing Domain-Driven Design patterns in code"
+glob: "**/*.rs"
+rules:
+  - name: "Ubiquitous Language"
+    pattern: "(class|struct|enum|type|interface)\\s+[A-Z][a-zA-Z]*"
+    ensure:
+      - "Names match domain vocabulary"
+      - "Consistent terminology across codebase"
+      - "Clear business meaning"
+      - "Documented in glossary"
+    message: "Type names must reflect ubiquitous language from domain"
+    severity: "warning"
 
-Our software development follows DDD principles to align technical implementation with business domains.
+  - name: "Entity Definition"
+    pattern: "(class|struct).*\\{[^}]*id.*\\}"
+    ensure:
+      - "Has unique identifier"
+      - "Implements equality based on identity"
+      - "Maintains lifecycle"
+      - "Encapsulates business rules"
+    message: "Entities must have identity and follow DDD principles"
+    severity: "error"
 
-## Core DDD Concepts
+  - name: "Value Object"
+    pattern: "#[derive(Clone, Copy)|@immutable|readonly"
+    ensure:
+      - "Is immutable"
+      - "Has no identity"
+      - "Implements value equality"
+      - "Encapsulates related attributes"
+    message: "Value objects must be immutable and have value semantics"
+    severity: "error"
 
-### Ubiquitous Language
-- Shared vocabulary between developers and domain experts
-- Reflected in code, documentation, and discussions
-- Maintained in a glossary for the project
+  - name: "Aggregate Root"
+    pattern: "(class|struct).*Repository"
+    ensure:
+      - "Maintains invariants"
+      - "Controls access to children"
+      - "Has transactional consistency"
+      - "Referenced by ID only"
+    message: "Aggregate roots must maintain consistency and control access"
+    severity: "error"
 
-### Bounded Contexts
-- Clear boundaries between different parts of the system
-- Each context has its own domain model
-- Contexts communicate through well-defined interfaces
+  - name: "Domain Event"
+    pattern: ".*Event$|.*EventHandler"
+    ensure:
+      - "Named in past tense"
+      - "Immutable"
+      - "Contains event metadata"
+      - "Carries relevant state"
+    message: "Domain events must be immutable and named in past tense"
+    severity: "warning"
 
-### Entities and Value Objects
-- Entities have identity and lifecycle (e.g., User, Order)
-- Value objects are immutable and identity-less (e.g., Address, Money)
-- Aggregates group entities and value objects with business invariants
+  - name: "Repository Pattern"
+    pattern: "interface.*Repository|trait.*Repository"
+    ensure:
+      - "Collection-like interface"
+      - "Persistence ignorant"
+      - "Returns domain objects"
+      - "Handles transaction boundaries"
+    message: "Repositories must abstract persistence and work with domain objects"
+    severity: "error"
 
-### Domain Events
-- Capture significant state changes
-- Named in past tense (e.g., OrderPlaced, PaymentProcessed)
-- Used for communication between bounded contexts
+  - name: "Bounded Context"
+    pattern: "module|namespace|package"
+    ensure:
+      - "Clear context boundaries"
+      - "Explicit dependencies"
+      - "Consistent model within context"
+      - "Well-defined interfaces"
+    message: "Bounded contexts must have clear boundaries and interfaces"
+    severity: "warning"
 
-## Event Storming
+  - name: "Domain Service"
+    pattern: "class.*Service|struct.*Service"
+    ensure:
+      - "Stateless operations"
+      - "Domain-specific behavior"
+      - "Not entity or value object"
+      - "Clear business purpose"
+    message: "Domain services must represent domain concepts that don't fit entities or value objects"
+    severity: "warning"
 
-Event storming sessions follow this format:
-1. Identify domain events (orange sticky notes)
-2. Add commands that trigger events (blue sticky notes)
-3. Identify aggregates and bounded contexts
-4. Establish policies and external systems
+  - name: "Factory Pattern"
+    pattern: "class.*Factory|struct.*Factory"
+    ensure:
+      - "Creates complex objects"
+      - "Encapsulates creation logic"
+      - "Returns valid objects"
+      - "Domain-focused construction"
+    message: "Factories must encapsulate complex object creation"
+    severity: "info"
 
-## Event Modeling
+  - name: "Specification Pattern"
+    pattern: "class.*Specification|trait.*Specification"
+    ensure:
+      - "Business rules as objects"
+      - "Composable conditions"
+      - "Single responsibility"
+      - "Reusable logic"
+    message: "Specifications must encapsulate business rules"
+    severity: "info"
 
-Our event modeling approach:
-1. Create timeline of events
-2. Identify commands and views
-3. Map to software components
-4. Define data requirements 
+suggestions:
+  - when: "creating_entity"
+    suggest: |
+      1. Define unique identifier
+      2. Implement equality based on ID
+      3. Encapsulate state and behavior
+      4. Validate invariants
+      5. Document lifecycle
+
+  - when: "creating_value_object"
+    suggest: |
+      1. Make properties immutable
+      2. Implement value equality
+      3. Validate at creation
+      4. Document validation rules
+      5. Consider factory methods
+
+  - when: "implementing_aggregate"
+    suggest: |
+      1. Define aggregate root
+      2. Enforce invariants
+      3. Control child access
+      4. Handle consistency
+      5. Document boundaries
+
+  - when: "defining_bounded_context"
+    suggest: |
+      1. Identify context boundaries
+      2. Define ubiquitous language
+      3. Create context map
+      4. Document interfaces
+      5. Handle translations
+
+references:
+  - "Domain-Driven Design: Tackling Complexity in the Heart of Software by Eric Evans"
+  - "Implementing Domain-Driven Design by Vaughn Vernon"
+  - "Domain-Driven Design Reference by Eric Evans" 

@@ -1,0 +1,136 @@
+rule_name: "ECS NATS Architecture"
+description: "Rules for implementing Entity Component System (ECS) with NATS messaging"
+glob: "**/*.rs"
+rules:
+  - name: "Entity Definition"
+    pattern: "struct.*EntityId"
+    ensure:
+      - "Implements Debug, Clone, Hash, Eq, PartialEq"
+      - "Contains unique identifier (UUID)"
+      - "Implements to_subject() for NATS routing"
+    message: "EntityId must be unique and implement necessary traits for distributed systems"
+    severity: "error"
+
+  - name: "Component Structure"
+    pattern: "struct Component<.*>"
+    ensure:
+      - "Derives Debug, Clone, Serialize, Deserialize"
+      - "Contains entity_id, data, version, and timestamp"
+      - "Implements new() constructor"
+    message: "Components must be serializable and contain required fields"
+    severity: "error"
+
+  - name: "System Implementation"
+    pattern: "trait System"
+    ensure:
+      - "Defines associated Component type"
+      - "Implements process() method"
+      - "Defines subject_pattern()"
+      - "Returns Result<Command, SystemError>"
+    message: "Systems must properly handle component processing and NATS communication"
+    severity: "error"
+
+  - name: "NATS Integration"
+    pattern: "async_nats::Client"
+    ensure:
+      - "Proper error handling"
+      - "Async/await usage"
+      - "Connection management"
+      - "Subject pattern consistency"
+    message: "NATS client usage must follow async patterns and handle errors"
+    severity: "warning"
+
+  - name: "Component Registration"
+    pattern: "register_component"
+    ensure:
+      - "Updates registry state"
+      - "Publishes to NATS"
+      - "Handles serialization"
+      - "Returns Result"
+    message: "Component registration must maintain consistency and handle errors"
+    severity: "warning"
+
+  - name: "Query Implementation"
+    pattern: "struct QueryBuilder"
+    ensure:
+      - "Builds proper NATS subjects"
+      - "Handles component requirements"
+      - "Implements builder pattern"
+      - "Returns Result<Vec<EntityId>>"
+    message: "Queries must be builder-pattern based and handle errors"
+    severity: "warning"
+
+  - name: "Error Handling"
+    pattern: "Error.*enum"
+    ensure:
+      - "Derives Debug and Error traits"
+      - "Implements From for common errors"
+      - "Provides error context"
+    message: "Error types must be properly defined and implement necessary traits"
+    severity: "error"
+
+  - name: "Security Implementation"
+    pattern: "(auth|security|policy)"
+    ensure:
+      - "Uses environment variables for secrets"
+      - "Implements proper authentication"
+      - "Checks authorization"
+    message: "Security measures must be properly implemented"
+    severity: "error"
+
+  - name: "Monitoring"
+    pattern: "(Metrics|log|trace)"
+    ensure:
+      - "Uses proper telemetry"
+      - "Implements structured logging"
+      - "Records performance metrics"
+    message: "Proper monitoring and logging must be implemented"
+    severity: "warning"
+
+  - name: "Testing"
+    pattern: "#[cfg(test)]"
+    ensure:
+      - "Tests component synchronization"
+      - "Tests entity operations"
+      - "Tests NATS integration"
+      - "Mocks external dependencies"
+    message: "Comprehensive tests must be implemented for all ECS operations"
+    severity: "info"
+
+suggestions:
+  - when: "creating_new_component"
+    suggest: |
+      1. Define component struct with generic type
+      2. Implement Serialize and Deserialize
+      3. Add entity_id, version, and timestamp fields
+      4. Implement new() constructor
+      5. Add registration with NATS
+
+  - when: "implementing_system"
+    suggest: |
+      1. Define System trait implementation
+      2. Implement process() method
+      3. Define subject pattern
+      4. Handle NATS communication
+      5. Implement error handling
+
+  - when: "adding_security"
+    suggest: |
+      1. Use environment variables for credentials
+      2. Implement authentication options
+      3. Add authorization checks
+      4. Log security events
+      5. Handle security errors
+
+  - when: "implementing_queries"
+    suggest: |
+      1. Use QueryBuilder pattern
+      2. Define component requirements
+      3. Implement NATS subject construction
+      4. Handle query responses
+      5. Implement error handling
+
+references:
+  - "NATS Documentation: https://docs.nats.io/"
+  - "Rust async-nats: https://docs.rs/async-nats"
+  - "ECS Pattern: https://gameprogrammingpatterns.com/component.html" 

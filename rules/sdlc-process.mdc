@@ -1,46 +1,149 @@
----
-description: software development process
-globs: 
----
-# Software Development Lifecycle Process
+rule_name: "SDLC Process Management"
+description: "Rules for enforcing software development lifecycle process with DDD, event storming, and event modeling"
+glob: "docs/**/*.(md|rs|nix)"
+rules:
+  - name: "Project Planning Documentation"
+    pattern: "docs/planning/.*\\.md"
+    ensure:
+      - "Contains product vision"
+      - "Includes timeline"
+      - "Lists resource allocation"
+      - "Defines business objectives"
+    message: "Project planning documentation must include vision, timeline, and objectives"
+    severity: "error"
 
-Our team follows a modified waterfall approach incorporating Domain Driven Design (DDD), event storming, and event modeling. This file outlines our process from idea to deployment.
+  - name: "Requirements Documentation"
+    pattern: "docs/requirements/.*\\.md"
+    ensure:
+      - "Lists functional requirements"
+      - "Specifies user needs"
+      - "Documents AI integration points"
+      - "Links to business objectives"
+    message: "Requirements must be fully documented with AI integration opportunities"
+    severity: "error"
 
-## Lifecycle Stages
+  - name: "System Design DDD"
+    pattern: "docs/design/.*\\.(md|puml)"
+    ensure:
+      - "Uses DDD principles"
+      - "Documents event storming results"
+      - "Includes event models"
+      - "Defines bounded contexts"
+      - "Contains ubiquitous language"
+    message: "System design must follow DDD principles and include event modeling"
+    severity: "error"
 
-1. **Project Planning**
-   - Product Owner defines vision and priorities
-   - Project Manager creates timeline and resource allocation
-   - Business Analyst helps identify business objectives
+  - name: "Development Structure"
+    pattern: "src/.*\\.rs"
+    ensure:
+      - "Follows domain model"
+      - "Implements bounded contexts"
+      - "Includes AI capabilities"
+      - "Contains proper documentation"
+    message: "Implementation must reflect domain model and bounded contexts"
+    severity: "error"
 
-2. **Requirements Gathering**
-   - Business Analyst documents functional requirements
-   - Product Owner ensures alignment with user needs
-   - AI Prompt Engineer identifies AI integration opportunities
+  - name: "Testing Coverage"
+    pattern: "tests/.*\\.(rs|nix)"
+    ensure:
+      - "Has unit tests"
+      - "Includes integration tests"
+      - "Contains e2e tests"
+      - "Tests domain logic"
+    message: "All required test types must be implemented"
+    severity: "error"
 
-3. **System Design**
-   - Software Architect leads design using DDD principles
-   - Team conducts event storming sessions
-   - Event modeling is used to design and document the system
-   - Creation of bounded contexts and ubiquitous language
+  - name: "Deployment Configuration"
+    pattern: ".*\\.nix"
+    ensure:
+      - "Uses NixOS configuration"
+      - "Defines containerization"
+      - "Includes deployment steps"
+      - "Specifies monitoring"
+    message: "Deployment configuration must be complete and NixOS-based"
+    severity: "error"
 
-4. **Development**
-   - Senior Developer implements core functionalities
-   - AI Prompt Engineer creates prompts and integrates AI capabilities
-   - Implementation follows the domain model established in design
-   - Code organization reflects bounded contexts
+  - name: "Lifecycle Stage Tracking"
+    pattern: "docs/progress\\.md"
+    ensure:
+      - "Tracks current stage"
+      - "Lists completed stages"
+      - "Documents next steps"
+      - "Records stage transitions"
+    message: "SDLC stage progression must be tracked in progress.md"
+    severity: "warning"
 
-5. **Testing**
-   - Unit tests for domain logic
-   - Integration tests for bounded contexts
-   - End-to-end tests for complete workflows
+  - name: "Memory Bank Integration"
+    pattern: "docs/(domainContext|systemPatterns)\\.md"
+    ensure:
+      - "References SDLC stage"
+      - "Updates with stage changes"
+      - "Links to stage artifacts"
+      - "Maintains consistency"
+    message: "Memory bank must be updated with SDLC progress"
+    severity: "warning"
 
-6. **Deployment**
-   - NixOS-based deployment
-   - Containerization when appropriate
-   - Configuration management through Nix
+  - name: "AI Integration Documentation"
+    pattern: "docs/ai/.*\\.md"
+    ensure:
+      - "Documents prompts"
+      - "Specifies AI capabilities"
+      - "Links to requirements"
+      - "Includes testing strategy"
+    message: "AI integration must be properly documented"
+    severity: "warning"
 
-7. **Maintenance and Support**
-   - Ongoing monitoring
-   - Bug fixes and enhancements
-   - Regular reviews of system performance 
+suggestions:
+  - when: "starting_stage"
+    suggest: |
+      1. Update progress.md with stage transition
+      2. Create stage-specific documentation
+      3. Update domainContext.md
+      4. Link to relevant memory bank files
+      5. Set up required tooling
+
+  - when: "planning_phase"
+    suggest: |
+      1. Document vision in projectBrief.md
+      2. Create timeline in planning/
+      3. Define objectives in projectContext.md
+      4. Update progress.md
+      5. Setup AI integration points
+
+  - when: "design_phase"
+    suggest: |
+      1. Conduct event storming session
+      2. Document in design/
+      3. Update systemPatterns.md
+      4. Define bounded contexts
+      5. Create ubiquitous language guide
+
+  - when: "development_phase"
+    suggest: |
+      1. Structure code by bounded contexts
+      2. Implement domain model
+      3. Integrate AI capabilities
+      4. Update techContext.md
+      5. Document in progress.md
+
+  - when: "testing_phase"
+    suggest: |
+      1. Create unit tests for domain logic
+      2. Add integration tests
+      3. Implement e2e tests
+      4. Document test coverage
+      5. Update progress.md
+
+  - when: "deployment_phase"
+    suggest: |
+      1. Create NixOS configuration
+      2. Set up containerization
+      3. Configure monitoring
+      4. Document deployment process
+      5. Update techContext.md
+
+references:
+  - "SDLC Process: docs/sdlc-process.md"
+  - "Project Memory: docs/project-memory.md"
+  - "Domain Model: docs/design/domain-model.md"
+  - "Deployment Guide: docs/deployment/nixos-setup.md" 

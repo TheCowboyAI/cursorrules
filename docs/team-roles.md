@@ -1,7 +1,3 @@
----
-description: Team structure and responsibilities for our software development lifecycle
-globs: "**/*.md"
----
 # Team Roles and Responsibilities
 
 Our development team consists of specific roles with defined responsibilities throughout the SDLC.

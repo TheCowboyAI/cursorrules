@@ -1,0 +1,130 @@
+rule_name: "Iced TEA Architecture"
+description: "Rules for implementing The Elm Architecture (TEA) with Iced in Rust"
+glob: "**/*.rs"
+rules:
+  - name: "Iced Documentation"
+    location: "https://docs.rs/iced/latest/iced/"
+    ensure:
+      - "Always use the latest documentation"
+      - "Always use the latest version of Iced"
+    message: "Always use the latest documentation and version of Iced"
+    severity: "warning"
+
+  - name: "State Management"
+    pattern: "pub struct .*"
+    where: "file_contains('#[derive(Debug, Clone)]')"
+    ensure:
+      - "Has Debug and Clone derives"
+      - "Groups related state in a single struct"
+      - "Uses appropriate Rust types for state representation"
+    message: "State structs should derive Debug and Clone, and group related state together"
+    severity: "warning"
+
+  - name: "Message Handling"
+    pattern: "pub enum Message"
+    ensure:
+      - "Messages are defined as enums"
+      - "Messages represent all possible state changes"
+      - "Nested messages use type composition"
+    message: "Messages should be enums that represent all possible state changes"
+    severity: "warning"
+
+  - name: "View Implementation"
+    pattern: "fn view.*Element<.*>"
+    ensure:
+      - "Returns Element<Message>"
+      - "Uses Iced widgets (Column, Row, Button, etc.)"
+      - "Implements proper event handling"
+    message: "View functions should return Element<Message> and use Iced widgets properly"
+    severity: "error"
+
+  - name: "Update Logic"
+    pattern: "fn update.*Message"
+    ensure:
+      - "Handles all message variants"
+      - "Returns Command for side effects"
+      - "Maintains immutability where possible"
+    message: "Update functions should handle all message variants and use Commands for side effects"
+    severity: "error"
+
+  - name: "Component Structure"
+    pattern: "mod.rs$"
+    ensure:
+      - "Follows modular component organization"
+      - "Exports necessary types and implementations"
+      - "Maintains separation of concerns"
+    message: "Components should be organized in modules with clear separation of concerns"
+    severity: "info"
+
+  - name: "Error Handling"
+    pattern: "Result<.*Error>"
+    ensure:
+      - "Uses Result for fallible operations"
+      - "Implements proper error types"
+      - "Provides meaningful error messages"
+    message: "Use Result for error handling with proper error types"
+    severity: "warning"
+
+  - name: "Testing Structure"
+    pattern: "#[cfg(test)]"
+    ensure:
+      - "Includes unit tests for state changes"
+      - "Tests message handling"
+      - "Verifies view rendering"
+    message: "Include comprehensive tests for state, messages, and views"
+    severity: "info"
+
+  - name: "Performance Patterns"
+    pattern: "#[derive(PartialEq)]"
+    ensure:
+      - "Implements PartialEq for efficient updates"
+      - "Uses Clone sparingly"
+      - "Implements lazy loading where appropriate"
+    message: "Follow performance best practices for efficient UI updates"
+    severity: "info"
+
+  - name: "Style Management"
+    pattern: "impl.*StyleSheet"
+    ensure:
+      - "Implements proper theme structure"
+      - "Uses Iced's styling system"
+      - "Maintains consistent styling patterns"
+    message: "Use Iced's styling system consistently with proper theme implementation"
+    severity: "warning"
+
+  - name: "Command Handling"
+    pattern: "Command::perform"
+    ensure:
+      - "Uses async operations properly"
+      - "Handles side effects appropriately"
+      - "Returns proper message types"
+    message: "Use Commands for handling async operations and side effects"
+    severity: "warning"
+
+suggestions:
+  - when: "creating_new_component"
+    suggest: |
+      1. Create a new module in src/components/
+      2. Define state struct with Debug and Clone
+      3. Define Message enum for all possible actions
+      4. Implement view() returning Element<Message>
+      5. Implement update() handling all messages
+      6. Add unit tests
+
+  - when: "implementing_side_effects"
+    suggest: |
+      1. Use Command::perform for async operations
+      2. Define appropriate Message variants for success/failure
+      3. Handle errors with Result
+      4. Update state based on operation results
+
+  - when: "styling_components"
+    suggest: |
+      1. Define styles in styles/theme.rs
+      2. Implement StyleSheet trait
+      3. Use consistent color and spacing variables
+      4. Apply styles through widget methods
+
+references:
+  - "Iced Documentation: https://docs.rs/iced"
+  - "The Elm Architecture: https://guide.elm-lang.org/architecture/" 

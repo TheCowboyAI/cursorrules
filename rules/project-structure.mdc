@@ -1,9 +1,0 @@
----
-description: project structure
-globs: 
----
-# Project Structure
-
-Our projects follow a structured organization that reflects our DDD approach and NixOS/Rust stack.
-
-## Repository Structure 

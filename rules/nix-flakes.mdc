@@ -1,0 +1,145 @@
+rule_name: "Nix Flakes Architecture"
+description: "Rules for implementing Nix flakes with best practices"
+glob: "**/*.nix"
+rules:
+
+DO NOT USE NON-FLAKE BASED METHOLOGIES BASED ON CHANNELS
+WE ONLY USE FLAKE BASED SYSTEMS
+
+  - name: "Flake Structure"
+    pattern: "\\{\\s*description\\s*=.*inputs\\s*=.*outputs\\s*="
+    ensure:
+      - "Has description field"
+      - "Defines inputs properly"
+      - "Implements outputs function"
+      - "Uses proper system support"
+    message: "Flake must follow standard structure with description, inputs, and outputs"
+    severity: "error"
+
+  - name: "Input Management"
+    pattern: "inputs\\s*=\\s*\\{.*\\}"
+    ensure:
+      - "Pins nixpkgs version"
+      - "Uses follows where appropriate"
+      - "Avoids unnecessary inputs"
+      - "Documents input purposes"
+    message: "Inputs should be properly managed and documented"
+    severity: "warning"
+
+  - name: "Module Structure"
+    pattern: "\\{\\s*config\\s*,\\s*lib\\s*,\\s*pkgs\\s*,.*\\}:"
+    ensure:
+      - "Uses standard module arguments"
+      - "Implements options properly"
+      - "Follows module composition patterns"
+      - "Handles dependencies correctly"
+    message: "Modules should follow standard structure and composition patterns"
+    severity: "error"
+
+  - name: "Overlay Implementation"
+    pattern: "final:\\s*prev:"
+    ensure:
+      - "Uses final/prev pattern"
+      - "Maintains compatibility"
+      - "Implements proper overrides"
+      - "Documents changes"
+    message: "Overlays should follow standard patterns and be well-documented"
+    severity: "warning"
+
+  - name: "Package Definition"
+    pattern: "stdenv\\.mkDerivation"
+    ensure:
+      - "Specifies all dependencies"
+      - "Handles build phases"
+      - "Implements proper installation"
+      - "Includes meta information"
+    message: "Package definitions should be complete and well-structured"
+    severity: "error"
+
+  - name: "Development Shell"
+    pattern: "mkShell\\s*\\{"
+    ensure:
+      - "Lists all development dependencies"
+      - "Sets up environment properly"
+      - "Includes necessary tools"
+      - "Documents shell usage"
+    message: "Development shells should be complete and documented"
+    severity: "warning"
+
+  - name: "Testing Implementation"
+    pattern: "nixosTest\\s*\\{"
+    ensure:
+      - "Implements proper test cases"
+      - "Handles test dependencies"
+      - "Includes assertions"
+      - "Documents test coverage"
+    message: "Tests should be comprehensive and well-documented"
+    severity: "info"
+
+  - name: "Cache Configuration"
+    pattern: "nixConfig\\s*=\\s*\\{"
+    ensure:
+      - "Specifies substituters"
+      - "Includes trusted keys"
+      - "Optimizes cache settings"
+      - "Documents cache configuration"
+    message: "Cache configuration should be secure and optimized"
+    severity: "warning"
+
+  - name: "Cross Compilation"
+    pattern: "pkgsCross"
+    ensure:
+      - "Handles target platforms"
+      - "Sets up toolchains"
+      - "Manages dependencies"
+      - "Documents build process"
+    message: "Cross-compilation setup should be complete and documented"
+    severity: "warning"
+
+  - name: "Version Management"
+    pattern: "version\\s*=\\s*\\{"
+    ensure:
+      - "Uses semantic versioning"
+      - "Updates consistently"
+      - "Documents changes"
+      - "Handles compatibility"
+    message: "Version management should follow semantic versioning"
+    severity: "info"
+
+suggestions:
+  - when: "creating_new_flake"
+    suggest: |
+      1. Start with basic flake structure
+      2. Define required inputs
+      3. Implement outputs function
+      4. Set up system support
+      5. Add documentation
+
+  - when: "adding_module"
+    suggest: |
+      1. Create module in appropriate directory
+      2. Define options and config
+      3. Handle dependencies
+      4. Add documentation
+      5. Test functionality
+
+  - when: "implementing_overlay"
+    suggest: |
+      1. Use final/prev pattern
+      2. Handle package overrides
+      3. Maintain compatibility
+      4. Document changes
+      5. Test modifications
+
+  - when: "setting_up_development"
+    suggest: |
+      1. Define development shell
+      2. List all dependencies
+      3. Set up environment
+      4. Add helper scripts
+      5. Document usage
+
+references:
+  - "Nix Manual: https://nixos.org/manual/nix/stable/"
+  - "NixOS Manual: https://nixos.org/manual/nixos/stable/"
+  - "Nix Flakes: https://nixos.wiki/wiki/Flakes" 

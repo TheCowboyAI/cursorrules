@@ -2,36 +2,12 @@
 description: nixos
 globs: 
 ---
-DO NOT USE NON-FLAKE BASED METHOLOGIES BASED ON CHANNELS
-WE ONLY USE FLAKE BASED SYSTEMS
+
 
 ## NixOS Foundation Rules
 1. **Always start with Nix flake**  
-```
-   {
-     inputs = {
-       nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-       rust-overlay.url = "github:oxalica/rust-overlay";
-     };
-     
-     outputs = { self, nixpkgs, rust-overlay }:
-       let
-         system = "x86_64-linux";
-         pkgs = import nixpkgs {
-           inherit system;
-           overlays = [ rust-overlay ];
-         };
-         toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-       in {
-         devShells.${system}.default = pkgs.mkShell {
-           packages = with pkgs; [ 
-             rust-bin.stable.latest.default
-             toolchain
-           ];
-         };
-       };
-   }
-  ```
+we prefer a template from @https://github.com/thecowboyai/flake-templates
+
 make a .envrc file to support direnv.
 
 always check the linter and fix and errors or warnings
